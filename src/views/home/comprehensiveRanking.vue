@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="qianren">
     <div>
       <div class="compre-hensive">
         <div class="left-side aside l">
@@ -245,6 +245,7 @@ import { number} from "@/components/index.js";
 import echartsMap from "../component/map.vue";
 import monitorData from "./monitorData.vue"
 import("@/assets/css/index.scss");
+import('./index.scss')
 export default {
   data() {
     return {
@@ -260,18 +261,10 @@ export default {
       sortType4:0, //告警恢复率排序方式
       sortType5:0, //任务数量排名排序方式
       timer:null,
+      alarmData:[],
+      orderData:[],
+      currentBlock:[]
     };
-  },
-  props:{
-    alarmData:{
-        type:Array
-    },
-    orderData:{
-        type:Array
-    },
-    currentBlock:{
-        type:Object
-    }
   },
   components: {
     number,

@@ -79,6 +79,12 @@ export default {
     this.user.password = localStorage.getItem("password")||'';
   },
   methods: {
+    /**
+     * 平台管理—查询用户平台信息
+     */
+    queryTUserForm(){
+      return this.$post('QueryTUserForm')
+    },
     async login() {
         await new Promise(resolve => {
             this.$refs.form.validate((valid) => {
@@ -88,11 +94,10 @@ export default {
             });
         })
         Login({
-          FUserName: this.user.userName,
-          FPassword: this.user.password,
-          TerminalType: "PC"
+          fuserName:this.user.userName,
+          fpassword:this.user.password
         })
-          .then(data => {
+          .then(async data => {
             let userInfo = data.FObject
             sessionStorage.setItem("FToken", userInfo.FTokenID);
             sessionStorage.setItem("FContacts", userInfo.FContacts);
@@ -110,13 +115,21 @@ export default {
               localStorage.setItem("userName", this.user.userName);
               localStorage.setItem("password", this.user.password);
             }
-            this.$store.dispatch('getMenus')
-            .then((result) => {
-              this.$store.dispatch('addRoute')
-              this.$router.push("/");
-            }).catch((err) => {
-              
-            });
+            let result = await this.queryTUserForm()
+            let formList = result.FObject
+            sessionStorage.setItem('formList',JSON.stringify(formList))
+            let form = formList[0]
+            if(form){
+              this.$store.dispatch('getMenus',form.FGUID)
+              .then((result) => {
+                this.$store.dispatch('addRoute')
+                this.$router.push(`/${form.FIndex}`);
+              }).catch((err) => {
+                console.log(err)
+              });
+            }else{
+              this.$message.error("您的账号无平台登录权限!");
+            }
           })
           .catch(err => {
             if (err.Result == 103) {

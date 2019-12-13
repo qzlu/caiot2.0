@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="qianren">
     <div>
       <div class="compre-hensive">
         <div class="left-side aside l">
@@ -186,6 +186,7 @@ import { number, pieChart, barChart } from "@/components/index.js";
 import echartsMap from "../component/map.vue";
 import monitorData from "./monitorData.vue"
 import("@/assets/css/index.scss");
+import("./index.scss")
 export default {
   data() {
     return {
